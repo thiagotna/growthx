@@ -1,8 +1,5 @@
 import { IContentGeneratorService } from './IContentGeneratorService'
-
-interface IRequest {
-  topic: string
-}
+import IRequest from './IRequest'
 
 export class ContentGeneratorUseCase {
   constructor(private contentGeneratorService: IContentGeneratorService) {}

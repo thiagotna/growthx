@@ -2,15 +2,15 @@
 import fastify from 'fastify'
 import cors from '@fastify/cors'
 import { contentGeneratorRoutes } from '@/http/controller/contentGenerator/routes'
+import { publisherRoutes } from './http/controller/publisher/routes'
 
 const app = fastify()
 
-// Registra o plugin de CORS
 app.register(cors, {
-  origin: true, // Permite todas as origens, equivalente ao cors() do Express
+  origin: true,
 })
 
-// Registra o seu grupo de rotas
 app.register(contentGeneratorRoutes)
+app.register(publisherRoutes)
 
 export default app
