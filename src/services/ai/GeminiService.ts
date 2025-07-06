@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { IGeneratedPost } from './IGeneratedPost'
 import { GoogleGenAI } from '@google/genai'
 
@@ -5,7 +6,7 @@ export class GeminiService {
   private genAI: GoogleGenAI
 
   constructor() {
-    const apiKey = 'AIzaSyCYIrkuIxojQMJPKkj6664sb1MQnttvIgw'
+    const apiKey = process.env.GOOGLE_API_KEY
     if (!apiKey) {
       throw new Error('GOOGLE_API_KEY is not defined in .env file')
     }
