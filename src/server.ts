@@ -1,7 +1,12 @@
 import app from './app'
 
-// Inicia o servidor
-const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`)
-})
+const PORT = Number(process.env.PORT) || 3000
+app
+  .listen({ port: PORT, host: '0.0.0.0' })
+  .then(() => {
+    console.log(`Server runnung on port ${PORT}`)
+  })
+  .catch((err) => {
+    console.error('Fail to start server:', err)
+    process.exit(1)
+  })
