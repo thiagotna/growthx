@@ -1,6 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 import publishPost from '@/factory/Publisher'
+import { marked } from 'marked'
 
 export async function publish(request: FastifyRequest, reply: FastifyReply) {
   const publishBodySchema = z.object({
@@ -17,14 +18,14 @@ export async function publish(request: FastifyRequest, reply: FastifyReply) {
       request.body,
     )
 
-    console.log(request.body)
+    const htmlBody = await marked.parse(body)
 
     const publishPostFactory = await publishPost()
 
     const result = await publishPostFactory.execute({
       title,
       slug,
-      body,
+      body: htmlBody,
       imageUrl,
     })
 
