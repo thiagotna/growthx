@@ -6,44 +6,54 @@ export class PublisherUseCase {
   constructor(private publisherService: IPublisherService) {}
 
   async execute({ title, slug, body, imageUrl }: IRequest) {
-    const imageName = slug + '-header.jpg'
-    const mediaId = await this.publisherService.uploadImage(imageUrl, imageName)
-    if (!mediaId) {
-      throw new Error('Image upload failed, received no media ID.')
-    }
-    const createdPost = await this.publisherService.createPost({
-      title,
-      slug,
-      content: body,
-      featuredMediaId: mediaId,
-    })
-    const validatedPost = await this.publisherService.getPostBySlug(slug)
-
-    if (!validatedPost) {
-      throw new ValidationError(
-        'Validation failed: Post not found after creation.',
+    try {
+      const imageName = slug + '.jpg'
+      const mediaId = await this.publisherService.uploadImage(
+        imageUrl,
+        imageName,
       )
-    }
+      if (!mediaId) {
+        throw new Error('Image upload failed, received no media ID.')
+      }
+      const createdPost = await this.publisherService.createPost({
+        title,
+        slug,
+        content: body,
+        featuredMediaId: mediaId,
+      })
+      const validatedPost = await this.publisherService.getPostBySlug(slug)
 
-    if (validatedPost.title.rendered !== title) {
-      throw new ValidationError(
-        `Validation failed: Title does not match. Expected "${title}", got "${validatedPost.title.rendered}".`,
-      )
-    }
+      if (!validatedPost) {
+        throw new ValidationError(
+          'Validation failed: Post not found after creation.',
+        )
+      }
 
-    if (validatedPost.featured_media !== mediaId) {
-      throw new ValidationError(`Validation failed: Header image is incorrect.`)
-    }
+      if (validatedPost.title.rendered !== title) {
+        throw new ValidationError(
+          `Validation failed: Title does not match. Expected "${title}", got "${validatedPost.title.rendered}".`,
+        )
+      }
 
-    console.log('Post published and validated successfully!')
+      if (validatedPost.featured_media !== mediaId) {
+        throw new ValidationError(
+          `Validation failed: Header image is incorrect.`,
+        )
+      }
 
-    return {
-      message: 'Post published successfully!',
-      url: validatedPost.link,
-      validation: {
-        status: 'Success',
-        checks: ['Post created', 'Title matches', 'Image linked correctly'],
-      },
+      const successInfo = {
+        message: 'Post published successfully!',
+        url: validatedPost.link,
+        validation: {
+          status: 'Success',
+          checks: ['Post created', 'Title matches', 'Image linked correctly'],
+        },
+      }
+      console.log('Publicação realizada com sucesso:', successInfo)
+      return undefined
+    } catch (error) {
+      console.error('Erro em PublisherUseCase.execute:', error)
+      throw error
     }
   }
 }

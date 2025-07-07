@@ -19,41 +19,44 @@ export class WordPressService {
   }
 
   async uploadImage(imageUrl: string, fileName: string): Promise<number> {
-    const imageResponse = await fetch(imageUrl)
+    try {
+      const imageResponse = await fetch(imageUrl)
 
-    // Validação para garantir que o download da imagem funcionou
-    if (!imageResponse.ok || !imageResponse.body) {
-      throw new Error(
-        `Failed to download image from ${imageUrl}. Status: ${imageResponse.status}`,
-      )
+      if (!imageResponse.ok || !imageResponse.body) {
+        throw new Error(
+          `Failed to download image from ${imageUrl}. Status: ${imageResponse.status}`,
+        )
+      }
+
+      const form = new FormData()
+      form.append('file', imageResponse.body, fileName)
+      form.append('title', `Header for ${fileName}`)
+
+      const response = await fetch(`${this.WP_URL}/wp-json/wp/v2/media`, {
+        method: 'POST',
+        headers: {
+          Authorization: this.authHeader,
+          ...form.getHeaders(),
+        },
+        body: form,
+      })
+
+      if (!response.ok) {
+        const errorBody = await response.text()
+        throw new Error(
+          `Failed to upload image: ${response.statusText} - ${errorBody}`,
+        )
+      }
+
+      const data: { id: number } = (await response.json()) as { id: number }
+
+      console.log(data)
+
+      return data.id
+    } catch (error) {
+      console.error('Erro em uploadImage:', error)
+      throw error
     }
-
-    const form = new FormData()
-
-    // A MUDANÇA ESTÁ AQUI:
-    // Passamos 'imageResponse.body', que é um stream, em vez de um buffer.
-    // Também simplificamos o terceiro argumento, que pode ser apenas o nome do arquivo.
-    form.append('file', imageResponse.body, fileName)
-    form.append('title', `Header for ${fileName}`)
-
-    const response = await fetch(`${this.WP_URL}/wp-json/wp/v2/media`, {
-      method: 'POST',
-      headers: {
-        Authorization: this.authHeader,
-        ...form.getHeaders(),
-      },
-      body: form,
-    })
-
-    if (!response.ok) {
-      const errorBody = await response.text()
-      throw new Error(
-        `Failed to upload image: ${response.statusText} - ${errorBody}`,
-      )
-    }
-
-    const data: { id: number } = (await response.json()) as { id: number }
-    return data.id
   }
 
   async createPost(postData: {
@@ -62,39 +65,49 @@ export class WordPressService {
     content: string
     featuredMediaId: number
   }): Promise<IWpPost> {
-    const response = await fetch(`${this.WP_URL}/wp-json/wp/v2/posts`, {
-      method: 'POST',
-      headers: {
-        Authorization: this.authHeader,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title: postData.title,
-        slug: postData.slug,
-        content: postData.content,
-        status: 'publish',
-        featured_media: postData.featuredMediaId,
-      }),
-    })
+    try {
+      const response = await fetch(`${this.WP_URL}/wp-json/wp/v2/posts`, {
+        method: 'POST',
+        headers: {
+          Authorization: this.authHeader,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: postData.title,
+          slug: postData.slug,
+          content: postData.content,
+          status: 'publish',
+          featured_media: postData.featuredMediaId,
+        }),
+      })
 
-    if (!response.ok) {
-      const errorBody = await response.text()
-      throw new Error(
-        `Failed to create post: ${response.statusText} - ${errorBody}`,
-      )
+      if (!response.ok) {
+        const errorBody = await response.text()
+        throw new Error(
+          `Failed to create post: ${response.statusText} - ${errorBody}`,
+        )
+      }
+
+      return (await response.json()) as IWpPost
+    } catch (error) {
+      console.error('Erro em createPost:', error)
+      throw error
     }
-
-    return (await response.json()) as IWpPost
   }
 
   async getPostBySlug(slug: string): Promise<IWpPost | null> {
-    const response = await fetch(
-      `${this.WP_URL}/wp-json/wp/v2/posts?slug=${slug}`,
-      {
-        headers: { Authorization: this.authHeader },
-      },
-    )
-    const posts: IWpPost[] = (await response.json()) as IWpPost[]
-    return posts.length > 0 ? posts[0] : null
+    try {
+      const response = await fetch(
+        `${this.WP_URL}/wp-json/wp/v2/posts?slug=${slug}`,
+        {
+          headers: { Authorization: this.authHeader },
+        },
+      )
+      const posts: IWpPost[] = (await response.json()) as IWpPost[]
+      return posts.length > 0 ? posts[0] : null
+    } catch (error) {
+      console.error('Erro em getPostBySlug:', error)
+      throw error
+    }
   }
 }

@@ -16,9 +16,12 @@ export async function publish(request: FastifyRequest, reply: FastifyReply) {
     const { title, slug, body, imageUrl } = publishBodySchema.parse(
       request.body,
     )
+
+    console.log(request.body)
+
     const publishPostFactory = await publishPost()
 
-    const result = publishPostFactory.execute({
+    const result = await publishPostFactory.execute({
       title,
       slug,
       body,
