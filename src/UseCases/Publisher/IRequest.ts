@@ -1,6 +1,6 @@
 export default interface IRequest {
   title: string
   slug: string
-  body: string // Markdown
+  body: string
   imageUrl: string
 }
