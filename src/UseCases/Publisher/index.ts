@@ -7,6 +7,28 @@ export class PublisherUseCase {
 
   async execute({ title, slug, body, imageUrl }: IRequest) {
     try {
+      // Validação individual dos campos obrigatórios
+      if (!title || typeof title !== 'string' || title.trim() === '') {
+        throw new ValidationError(
+          'O campo "title" é obrigatório e não pode ser vazio.',
+        )
+      }
+      if (!slug || typeof slug !== 'string' || slug.trim() === '') {
+        throw new ValidationError(
+          'O campo "slug" é obrigatório e não pode ser vazio.',
+        )
+      }
+      if (!body || typeof body !== 'string' || body.trim() === '') {
+        throw new ValidationError(
+          'O campo "body" é obrigatório e não pode ser vazio.',
+        )
+      }
+      if (!imageUrl || typeof imageUrl !== 'string' || imageUrl.trim() === '') {
+        throw new ValidationError(
+          'O campo "imageUrl" é obrigatório e não pode ser vazio.',
+        )
+      }
+
       const imageName = slug + '.jpg'
       const mediaId = await this.publisherService.uploadImage(
         imageUrl,
