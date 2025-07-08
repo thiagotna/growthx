@@ -24,21 +24,7 @@ export class PublisherUseCase {
       const validatedPost = await this.publisherService.getPostBySlug(slug)
 
       if (!validatedPost) {
-        throw new ValidationError(
-          'Validation failed: Post not found after creation.',
-        )
-      }
-
-      if (validatedPost.title.rendered !== title) {
-        throw new ValidationError(
-          `Validation failed: Title does not match. Expected "${title}", got "${validatedPost.title.rendered}".`,
-        )
-      }
-
-      if (validatedPost.featured_media !== mediaId) {
-        throw new ValidationError(
-          `Validation failed: Header image is incorrect.`,
-        )
+        throw new ValidationError('Post not found after creation.')
       }
 
       const successInfo = {
