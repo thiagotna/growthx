@@ -21,4 +21,4 @@ COPY --from=builder /app/build ./build
 #COPY --from=builder /app/.env ./
 
 EXPOSE 3000
-CMD ["node", "build/server.cjs"]
+CMD ["node", "build/server.js"]
