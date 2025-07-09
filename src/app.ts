@@ -2,12 +2,18 @@ import 'dotenv/config'
 import fastify from 'fastify'
 import swagger from '@fastify/swagger'
 import swaggerUI from '@fastify/swagger-ui'
-import cors from '@fastify/cors'
+import cors, { fastifyCors } from '@fastify/cors'
 import { contentGeneratorRoutes } from '@/http/controller/contentGenerator/routes'
 import { publisherRoutes } from '@/http/controller/publisher/routes'
 import { generateAndPublishRoutes } from '@/http/controller/generateAndPublish/routes'
 
 const app = fastify()
+
+app.register(fastifyCors, { origin: '*' })
+
+app.get('/', async () => {
+  return { message: 'Welcome to GrowthX API' }
+})
 
 app.register(swagger, {
   swagger: {
@@ -29,10 +35,6 @@ app.register(swaggerUI, {
     docExpansion: 'full',
     deepLinking: false,
   },
-})
-
-app.register(cors, {
-  origin: true,
 })
 
 app.register(contentGeneratorRoutes)
