@@ -141,3 +141,4 @@ coverage/
 
 # Arquivos gerados por documentação
 /docs/_build/
+.vercel
