@@ -1,4 +1,4 @@
-// src/app.ts
+import 'dotenv/config'
 import fastify from 'fastify'
 import swagger from '@fastify/swagger'
 import swaggerUI from '@fastify/swagger-ui'
@@ -17,8 +17,7 @@ app.register(swagger, {
       description: 'API Documentation',
       version: '1.0.0',
     },
-    host: 'localhost:3000',
-    schemes: ['http'],
+    schemes: ['http', 'https'],
     consumes: ['application/json'],
     produces: ['application/json'],
   },
