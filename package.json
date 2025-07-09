@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.js",
-    "build": "tsup src --out-dir build"
+    "build": "tsup src --out-dir build --tsconfig tsconfig.json"
   },
   "keywords": [],
   "author": "Thiago do Nascimento Araujo",
