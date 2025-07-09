@@ -2,7 +2,7 @@
   "name": "growthx",
   "version": "1.0.0",
   "description": "",
-  "main": "build/server.cjs",
+  "main": "index.js",
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.cjs",
