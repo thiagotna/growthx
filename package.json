@@ -2,11 +2,11 @@
   "name": "growthx",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "build/server.cjs",
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.cjs",
-    "build": "tsup src --out-dir build"
+    "build": "tsup src/server.ts --out-dir build --format cjs"
   },
   "keywords": [],
   "author": "Thiago do Nascimento Araujo",
