@@ -2,15 +2,16 @@
   "name": "growthx",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.cjs",
-    "build": "tsup src --out-dir build --format cjs"
+    "build": "tsup src --out-dir build"
   },
   "keywords": [],
-  "author": "",
+  "author": "Thiago do Nascimento Araujo",
   "license": "ISC",
+  "type": "module",
   "dependencies": {
     "@fastify/cors": "^11.0.1",
     "@fastify/jwt": "^9.1.0",
