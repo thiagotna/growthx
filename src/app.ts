@@ -6,6 +6,7 @@ import { fastifyCors } from '@fastify/cors'
 import { contentGeneratorRoutes } from '@/http/controller/contentGenerator/routes'
 import { publisherRoutes } from '@/http/controller/publisher/routes'
 import { generateAndPublishRoutes } from '@/http/controller/generateAndPublish/routes'
+import uploadImageRoutes from './http/controller/uploadImage/route'
 
 const app = fastify()
 
@@ -39,6 +40,7 @@ app.register(swaggerUI, {
 
 app.register(contentGeneratorRoutes)
 app.register(publisherRoutes)
+app.register(uploadImageRoutes)
 app.register(generateAndPublishRoutes)
 
 export default app
