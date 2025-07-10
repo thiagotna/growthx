@@ -5,7 +5,7 @@ import IRequest from './IRequest'
 export class PublisherUseCase {
   constructor(private publisherService: IPublisherService) {}
 
-  async execute({ title, slug, body, imageUrl }: IRequest) {
+  async execute({ title, slug, body, mediaId }: IRequest) {
     try {
       if (!title || typeof title !== 'string' || title.trim() === '') {
         throw new ValidationError(
@@ -21,20 +21,6 @@ export class PublisherUseCase {
         throw new ValidationError(
           'O campo "body" é obrigatório e não pode ser vazio.',
         )
-      }
-      if (!imageUrl || typeof imageUrl !== 'string' || imageUrl.trim() === '') {
-        throw new ValidationError(
-          'O campo "imageUrl" é obrigatório e não pode ser vazio.',
-        )
-      }
-
-      const imageName = slug + '.jpg'
-      const mediaId = await this.publisherService.uploadImage(
-        imageUrl,
-        imageName,
-      )
-      if (!mediaId) {
-        throw new Error('Image upload failed, received no media ID.')
       }
       const createdPost = await this.publisherService.createPost({
         title,

@@ -2,6 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 import contentGeneratorFactory from '@/factory/ContentGenerator/contentGeneratorFactory'
 import publishPost from '@/factory/Publisher/'
+import uploadImage from '@/factory/ImageUpload'
 import { marked } from 'marked'
 
 export async function generateAndPublish(
@@ -16,15 +17,17 @@ export async function generateAndPublish(
   try {
     const { topic, imageUrlPath } = bodySchema.parse(request.body)
     const contentGenFactory = await contentGeneratorFactory()
+    const uploadImageFactory = await uploadImage()
     const publishPostFactory = await publishPost()
     const content = await contentGenFactory.execute({ topic })
     const { title, slug, body } = content
     const htmlBody = await marked.parse(body)
+    const imageId = await uploadImageFactory.execute(slug, imageUrlPath)
     const wpPost = await publishPostFactory.execute({
       title,
       slug,
       body: htmlBody,
-      imageUrl: imageUrlPath,
+      mediaId: imageId,
     })
 
     return reply.status(201).send({

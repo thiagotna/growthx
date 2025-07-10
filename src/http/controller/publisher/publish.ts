@@ -1,6 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 import publishPost from '@/factory/Publisher'
+import uploadImage from '@/factory/ImageUpload'
 import { marked } from 'marked'
 
 export async function publish(request: FastifyRequest, reply: FastifyReply) {
@@ -17,16 +18,15 @@ export async function publish(request: FastifyRequest, reply: FastifyReply) {
     const { title, slug, body, imageUrl } = publishBodySchema.parse(
       request.body,
     )
-
     const htmlBody = await marked.parse(body)
-
+    const uploadImageFactory = await uploadImage()
     const publishPostFactory = await publishPost()
-
+    const imageId = await uploadImageFactory.execute(slug, imageUrl)
     const result = await publishPostFactory.execute({
       title,
       slug,
       body: htmlBody,
-      imageUrl,
+      mediaId: imageId,
     })
 
     return reply.status(201).send(result)
