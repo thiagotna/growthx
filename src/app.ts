@@ -12,7 +12,7 @@ const app = fastify()
 app.register(fastifyCors, { origin: '*' })
 
 app.get('/', async () => {
-  return { message: 'Welcome to GrowthX API' }
+  return { message: 'Welcome to GrowthX API: ' + process.env.WP_URL }
 })
 
 app.register(swagger, {

@@ -7,7 +7,6 @@ app
   .listen({ port: PORT, host: '0.0.0.0' })
   .then(() => {
     console.log(`Server runnung on port ${PORT}`)
-    console.log(process.env.WP_URL)
   })
   .catch((err) => {
     console.error('Fail to start server:', err)
