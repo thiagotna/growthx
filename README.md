@@ -78,4 +78,8 @@ docker-compose down -v
 
 ---
 
+Video: [https://www.youtube.com/watch?v=1Yq3hVjYCrE](https://www.youtube.com/watch?v=1Yq3hVjYCrE)
+
+---
+
 Questions? Open an issue or contact the maintainer.
