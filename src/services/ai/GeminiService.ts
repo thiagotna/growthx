@@ -17,15 +17,15 @@ export class GeminiService {
 
   public async generatePostContent(topic: string): Promise<IGeneratedPost> {
     const prompt = `
-      Gere um artigo de blog sobre o tópico "${topic}".
-      O artigo deve ser otimizado para SEO e seguir um tom informativo.
-      Sua resposta DEVE ser um objeto JSON válido, sem nenhum texto ou formatação adicional antes ou depois dele.
-      Use a seguinte estrutura JSON:
+      Generate a blog article on the topic "${topic}".
+      The article should be SEO-optimized and follow an informative tone.
+      Your response MUST be a valid JSON object, with no additional text or formatting before or after it.
+      Use the following JSON structure:
       {
-        "title": "Um título atraente e otimizado para SEO",
-        "body": "O conteúdo completo do artigo em formato Markdown. Inclua cabeçalhos (##), listas e negrito para estruturação.",
-        "slug": "um-slug-curto-e-descritivo-para-a-url",
-        "meta_title": "Um meta título para o Google com no máximo 60 caracteres"
+        "title": "An engaging and SEO-optimized title",
+        "body": "The full article content in Markdown format. Include headings (##), lists, and bold text for structure.",
+        "slug": "a short and descriptive slug for the URL",
+        "meta_title": "A meta title for Google with a maximum of 60 characters"
       }
     `
 
