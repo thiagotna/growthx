@@ -81,5 +81,7 @@ docker-compose down -v
 Video: [https://www.youtube.com/watch?v=1Yq3hVjYCrE](https://www.youtube.com/watch?v=1Yq3hVjYCrE)
 
 ---
+Live API: https://growthxai.onrender.com/docs
+Wordpress Site Demo: https://wordpress-1491060-5687336.cloudwaysapps.com/ (Expires on July 17th 2025)
 
 Questions? Open an issue or contact the maintainer.
