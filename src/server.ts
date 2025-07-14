@@ -1,3 +1,4 @@
+'config/env'
 import 'tsconfig-paths/register'
 import app from './app'
 

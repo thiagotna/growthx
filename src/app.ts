@@ -24,7 +24,7 @@ app.register(swagger, {
       description: 'API Documentation',
       version: '1.0.0',
     },
-    schemes: ['http', 'https'],
+    schemes: ['https'],
     consumes: ['application/json'],
     produces: ['application/json'],
   },
